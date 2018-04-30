@@ -9,8 +9,21 @@ import Sidebar from "components/Sidebar/Sidebar";
 import { style } from "variables/Variables.jsx";
 
 import dashboardRoutes from "routes/dashboard.jsx";
+import connectAll from '../../redux/connectAll';
+import { getCookie } from '../../general';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 class Dashboard extends Component {
+  static contextTypes = {
+    router: PropTypes.shape({
+      history: PropTypes.shape({
+        push: PropTypes.func.isRequired,
+        replace: PropTypes.func.isRequired
+      }).isRequired,
+      staticContext: PropTypes.object
+    }).isRequired
+  }
   constructor(props) {
     super(props);
     this.componentDidMount = this.componentDidMount.bind(this);
@@ -20,70 +33,105 @@ class Dashboard extends Component {
     };
   }
   handleNotificationClick(position) {
-    var color = Math.floor(Math.random() * 4 + 1);
-    var level;
-    switch (color) {
-      case 1:
-        level = "success";
-        break;
-      case 2:
-        level = "warning";
-        break;
-      case 3:
-        level = "error";
-        break;
-      case 4:
-        level = "info";
-        break;
-      default:
-        break;
-    }
-    this.state._notificationSystem.addNotification({
-      title: <span data-notify="icon" className="pe-7s-gift" />,
-      message: (
-        <div>
-          Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for
-          every web developer.
-        </div>
-      ),
-      level: level,
-      position: position,
-      autoDismiss: 15
-    });
+    // var color = Math.floor(Math.random() * 4 + 1);
+    // var level;
+    // switch (color) {
+    //   case 1:
+    //     level = "success";
+    //     break;
+    //   case 2:
+    //     level = "warning";
+    //     break;
+    //   case 3:
+    //     level = "error";
+    //     break;
+    //   case 4:
+    //     level = "info";
+    //     break;
+    //   default:
+    //     break;
+    // }
+    // this.state._notificationSystem.addNotification({
+    //   title: <span data-notify="icon" className="pe-7s-gift" />,
+    //   message: (
+    //     <div>
+    //       Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for
+    //       every web developer.
+    //     </div>
+    //   ),
+    //   level: level,
+    //   position: position,
+    //   autoDismiss: 15
+    // });
   }
+  checkIsLogin = (location) => {
+    if (location.pathname.toLowerCase() === "/login" ||
+      location.pathname.toLowerCase() === "/") {
+      if(!this.props.page.isDisabledMenuItem) {
+        this.props.disableMenuItem()
+      }
+    } else {
+      if(this.props.page.isDisabledMenuItem) {
+        this.props.enableMenuItem()
+      }
+      if (_.get(this.props, 'page.token', '').length === 0 && getCookie("token").length === 0) {
+        setTimeout(() => {
+          this.context.router.history.push('/')
+        }, 200);
+      }
+    }
+
+    if(this.props.page.token.length === 0) {
+      const token = getCookie("token");
+      let info = getCookie("info")
+      if(info.length > 0) {
+        info = JSON.parse(info)
+        this.props.setLoginValue({
+          ...info,
+          token: token
+        })
+      }
+    }
+  }
+
   componentDidMount() {
     this.setState({ _notificationSystem: this.refs.notificationSystem });
-    var _notificationSystem = this.refs.notificationSystem;
-    var color = Math.floor(Math.random() * 4 + 1);
-    var level;
-    switch (color) {
-      case 1:
-        level = "success";
-        break;
-      case 2:
-        level = "warning";
-        break;
-      case 3:
-        level = "error";
-        break;
-      case 4:
-        level = "info";
-        break;
-      default:
-        break;
-    }
-    _notificationSystem.addNotification({
-      title: <span data-notify="icon" className="pe-7s-gift" />,
-      message: (
-        <div>
-          Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for
-          every web developer.
-        </div>
-      ),
-      level: level,
-      position: "tr",
-      autoDismiss: 15
-    });
+    const { listen } = this.props.history;
+    this.checkIsLogin(this.props.location)
+    listen((location) => {
+      this.checkIsLogin(location)
+    })
+    // var _notificationSystem = this.refs.notificationSystem;
+    // var color = Math.floor(Math.random() * 4 + 1);
+    // var level;
+    // switch (color) {
+    //   case 1:
+    //     level = "success";
+    //     break;
+    //   case 2:
+    //     level = "warning";
+    //     break;
+    //   case 3:
+    //     level = "error";
+    //     break;
+    //   case 4:
+    //     level = "info";
+    //     break;
+    //   default:
+    //     break;
+    // }
+    // _notificationSystem.addNotification({
+    //   title: <span data-notify="icon" className="pe-7s-gift" />,
+    //   message: (
+    //     <div>
+    //       Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for
+    //       every web developer.
+    //     </div>
+    //   ),
+    //   level: level,
+    //   position: "tr",
+    //   autoDismiss: 15
+    // });
   }
   componentDidUpdate(e) {
     if (
@@ -99,6 +147,7 @@ class Dashboard extends Component {
       this.refs.mainPanel.scrollTop = 0;
     }
   }
+  
   render() {
     return (
       <div className="wrapper">
@@ -135,4 +184,7 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default connectAll(Dashboard, {
+  states: ["page"],
+  actions: ["disableMenuItem", "enableMenuItem", "setLoginValue"]
+});

@@ -11,13 +11,18 @@ import "./assets/sass/light-bootstrap-dashboard.css?v=1.2.0";
 import "./assets/css/demo.css";
 import "./assets/css/pe-icon-7-stroke.css";
 
+import { Provider } from 'react-redux';
+import getStore from './redux/store'
+
 ReactDOM.render(
-  <HashRouter>
-    <Switch>
-      {indexRoutes.map((prop, key) => {
-        return <Route to={prop.path} component={prop.component} key={key} />;
-      })}
-    </Switch>
-  </HashRouter>,
+  <Provider store={getStore()}>
+    <HashRouter>
+      <Switch>
+        {indexRoutes.map((prop, key) => {
+          return <Route to={prop.path} component={prop.component} key={key} />;
+        })}
+      </Switch>
+    </HashRouter>
+  </Provider>,
   document.getElementById("root")
 );

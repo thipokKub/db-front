@@ -1,14 +1,61 @@
-import Dashboard from "views/Dashboard/Dashboard";
-import UserProfile from "views/UserProfile/UserProfile";
-import TableList from "views/TableList/TableList";
-import Typography from "views/Typography/Typography";
-import Icons from "views/Icons/Icons";
-import Maps from "views/Maps/Maps";
-import Notifications from "views/Notifications/Notifications";
-import Upgrade from "views/Upgrade/Upgrade";
+// import Dashboard from "views/Dashboard/Dashboard";
+// import UserProfile from "views/UserProfile/UserProfile";
+// import TableList from "views/TableList/TableList";
+// import Typography from "views/Typography/Typography";
+// import Icons from "views/Icons/Icons";
+// import Maps from "views/Maps/Maps";
+// import Notifications from "views/Notifications/Notifications";
+import CourseRegistration from "../views/CourseRegistration";
+import Reservation from "../views/Reservation";
+import Default from "../views/Default";
+import Login from "../views/Login";
+import Profile from '../views/Profile';
+import Schedule from '../views/Schedule';
 
 const dashboardRoutes = [
   {
+    path: "/announcement",
+    name: "Announcement",
+    icon: "pe-7s-speaker",
+    component: Default
+  },
+  {
+    path: "/courseRegistration",
+    name: "Course Registration",
+    icon: "pe-7s-study",
+    component: CourseRegistration
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    icon: "pe-7s-user",
+    component: Profile
+  },
+  {
+    path: "/login",
+    name: "Login",
+    icon: "pe-7s-user",
+    component: Login
+  },
+  {
+    path: "/schedule",
+    name: "Course Schedule",
+    icon: "pe-7s-timer",
+    component: Schedule
+  },
+  {
+    path: "/reservation",
+    name: "Reservation",
+    icon: "pe-7s-note",
+    component: Reservation
+  },
+  { redirect: true, path: "/", to: "/login", name: "Default" }
+];
+
+export default dashboardRoutes;
+
+/*
+{
     path: "/dashboard",
     name: "Dashboard",
     icon: "pe-7s-graph",
@@ -39,15 +86,5 @@ const dashboardRoutes = [
     name: "Notifications",
     icon: "pe-7s-bell",
     component: Notifications
-  },
-  {
-    upgrade: true,
-    path: "/upgrade",
-    name: "Upgrade to PRO",
-    icon: "pe-7s-rocket",
-    component: Upgrade
-  },
-  { redirect: true, path: "/", to: "/dashboard", name: "Dashboard" }
-];
-
-export default dashboardRoutes;
+  }
+*/

@@ -4,6 +4,18 @@ import { Navbar } from "react-bootstrap";
 import HeaderLinks from "./HeaderLinks.jsx";
 
 import dashboardRoutes from "routes/dashboard.jsx";
+import styled from 'styled-components';
+
+const Name = styled.a`
+display: inline-flex;
+justify-content: center;
+align-items: center;
+i {
+  font-size: 1.5em;
+  margin-right: 10px;
+  margin-left: 25px;
+}
+`;
 
 class Header extends Component {
   constructor(props) {
@@ -30,12 +42,13 @@ class Header extends Component {
     document.body.appendChild(node);
   }
   getBrand() {
-    var name;
+    var name, icon;
     dashboardRoutes.map((prop, key) => {
       if (prop.collapse) {
         prop.views.map((prop, key) => {
           if (prop.path === this.props.location.pathname) {
             name = prop.name;
+            icon = prop.icon;
           }
           return null;
         });
@@ -43,23 +56,26 @@ class Header extends Component {
         if (prop.redirect) {
           if (prop.path === this.props.location.pathname) {
             name = prop.name;
+            icon = prop.icon;
           }
         } else {
           if (prop.path === this.props.location.pathname) {
             name = prop.name;
+            icon = prop.icon;
           }
         }
       }
       return null;
     });
-    return name;
+    return {name: name, icon: icon};
   }
   render() {
+    const prop = this.getBrand();
     return (
       <Navbar fluid>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#pablo">{this.getBrand()}</a>
+            <Name><i className={prop.icon} />{prop.name}</Name>
           </Navbar.Brand>
           <Navbar.Toggle onClick={this.mobileSidebarToggle} />
         </Navbar.Header>
