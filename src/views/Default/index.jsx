@@ -13,9 +13,13 @@ const { apiUri } = constraint;
 const AnnouncementHeader = styled.div`
 display: flex;
 align-items: center;
+margin-top: 20px;
+h1 {
+    margin-top: 10px;
+}
 div {
     display: inline-block;
-    width: 50px;
+    width: 70px;
     margin-right: 20px;
     margin-left: 20px;
     img {

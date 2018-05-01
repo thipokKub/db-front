@@ -1,6 +1,6 @@
 const constraint = {
     "apiUri": `http://localhost:3000`,
-    "projectName": `John Cena`,
+    "projectName": `Reg Tangmo`,
     "timeOutTime": 1200
 }
 
