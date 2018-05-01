@@ -12,6 +12,7 @@ import constraint from '../../variables/Constraint';
 import { modObj, getCookie } from '../../general';
 import PropTypes from 'prop-types';
 import DateTime from 'react-datetime';
+import moment from 'moment';
 
 const { apiUri, timeOutTime } = constraint;
 
@@ -451,8 +452,8 @@ class Reservation extends Component {
                                                                 <tr key={key}>
                                                                     <td>{it.BuildID}</td>
                                                                     <td>{it.RoomID}</td>
-                                                                    <td>{(new Date(it.StartTime)).toUTCString()}</td>
-                                                                    <td>{(new Date(it.FinishTime)).toUTCString()}</td>
+                                                                    <td>{moment(new Date(it.StartTime)).local("th").format('YYYY-MM-DD HH:mm:ss')}</td>
+                                                                    <td>{moment(new Date(it.FinishTime)).local("th").format('YYYY-MM-DD HH:mm:ss')}</td>
                                                                     <td>{it.ReserveBy}</td>
                                                                     <td>{it.Objective}</td>
                                                                 </tr>
