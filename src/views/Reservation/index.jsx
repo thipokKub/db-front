@@ -263,8 +263,8 @@ class Reservation extends Component {
             const response = await axios.post(`${ apiUri }/room/table`, {
                 "BuildID": this.state.BuildID.text,
                 "RoomID": this.state.RoomID.text,
-                "StartTime": this.state.StartTime.text.toISOString().slice(0, 19).replace('T', ' '),
-                "FinishTime": this.state.FinishTime.text.toISOString().slice(0, 19).replace('T', ' ')
+                "StartTime": moment(this.state.StartTime.text).local("th").format("YYYY-MM-DD HH:mm:ss"),
+                "FinishTime": moment(this.state.FinishTime.text).local("th").format("YYYY-MM-DD HH:mm:ss")
             }, {
                 "headers": {
                     "Authorization": `Bearer ${this.props.page.token || getCookie('token')}`,
@@ -283,8 +283,8 @@ class Reservation extends Component {
             const response = await axios.post(`${apiUri}/room/reserve`, {
                 "BuildID": this.state.BuildID.text,
                 "RoomID": this.state.RoomID.text,
-                "StartTime": this.state.StartTime.text.toISOString().slice(0, 19).replace('T', ' '),
-                "FinishTime": this.state.FinishTime.text.toISOString().slice(0, 19).replace('T', ' '),
+                "StartTime": moment(this.state.StartTime.text).local("th").format("YYYY-MM-DD HH:mm:ss"),
+                "FinishTime": moment(this.state.FinishTime.text).local("th").format("YYYY-MM-DD HH:mm:ss"),
                 "Objective": this.state.Objective.text
             }, {
                 "headers": {
